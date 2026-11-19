@@ -1,5 +1,7 @@
 # maritaca-text-only
 
+> **Veja como funciona em 1 minuto:** [docs/explainer.html](docs/explainer.html) — página visual com o incidente, o fluxo da taxa e o bloqueio da skill.
+
 Skill de blindagem de custo para o [Command Code](https://commandcode.ai) (padrão [Agent Skills](https://agentskills.io)): garante que, com um modelo da [Maritaca AI](https://maritaca.ai) ativo, **nenhum anexo visual entre no payload** — evitando a taxa de *File extraction* da API.
 
 ## O problema
