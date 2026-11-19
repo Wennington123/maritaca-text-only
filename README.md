@@ -16,7 +16,7 @@ Em novembro de 2026, uma sessão de trabalho com o modelo `s5-nano` (via BYOK) g
 | File extraction | **R$ 9,84** (97% do gasto) |
 | Tokens (1,5M input / 2,7M cacheados / 134K output) | R$ 0,26 |
 
-A causa: a ferramenta de leitura de arquivos do agente anexa imagens (`read_file` em `.png`/`.jpg`) **inteiras como base64** ao contexto. O `s5-nano` é multimodal, então a imagem entra direto no payload — e a Maritaca cobra "File extraction" (~R$ 0,50/MB, inferido empiricamente) **re-cobrada a cada request** enquanto a imagem permanecer no histórico. 18 previews de ~131 KB re-enviados ao longo de 102 requests = R$ 9,84 em minutos.
+A causa: a ferramenta de leitura de arquivos do agente anexa imagens (`read_file` em `.png`/`.jpg`) **inteiras como base64** ao contexto. O `s5-nano` é multimodal, então a imagem entra direto no payload — e a Maritaca cobra "File extraction" por página extraída (R$ 0,020/página no nível `medium`; cada imagem conta como 1 página, por [documentação oficial](https://docs.maritaca.ai/pt/files)), **re-cobrada a cada request** enquanto a imagem permanecer no histórico: *"A API não armazena o texto extraído... uma nova extração será feita (e cobrada)"*. 18 imagens de ~131 KB re-extraídas ao longo de 102 requests (~490 páginas) = R$ 9,84 em minutos.
 
 Tokens de texto do S5-nano são quase de graça (R$ 0,10/0,60 por 1M). A taxa de arquivo é o único perigo.
 
@@ -83,7 +83,7 @@ cmd config set feature-model:vision deepseek/deepseek-v4.1-flash --scope user
 - Skill é **instrução de comportamento**, não trava técnica no payload: o agente segue as regras, mas um LLM não é determinístico
 - Modelos multimodais (S5, S5-nano) recebem imagem anexada **direto no payload** — o pipeline de descrição só intercepta para modelos text-only
 - Trava 100% garantida: desabilitar o provider no `~/.commandcode/providers.json` (`"disabled": true`) enquanto não estiver usando
-- A taxa de R$ 0,50/MB é **inferida empiricamente** (R$ 0,06 ÷ 131 KB no teste controlado), não documentada oficialmente pela Maritaca
+- Tarifa oficial: R$ 0,020/página (`medium`) e R$ 0,025/página (`advanced`) — cada imagem conta como 1 página ([docs/pt/files](https://docs.maritaca.ai/pt/files))
 
 ## Segurança
 
